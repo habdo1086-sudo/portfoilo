@@ -411,6 +411,120 @@
   .reveal-delay-3 { transition-delay: 0.3s; }
   .reveal-delay-4 { transition-delay: 0.4s; }
 
+  /* Mobile nav burger */
+  .nav-burger {
+    display: none;
+    flex-direction: column; justify-content: center; gap: 6px;
+    background: none; border: none; cursor: pointer;
+    padding: 4px; z-index: 200;
+  }
+  .nav-burger span {
+    display: block; width: 24px; height: 1px;
+    background: var(--white); transition: transform 0.3s, opacity 0.3s;
+  }
+  .nav-burger.open span:first-child { transform: translateY(3.5px) rotate(45deg); }
+  .nav-burger.open span:last-child  { transform: translateY(-3.5px) rotate(-45deg); }
+
+  /* Mobile full-screen menu */
+  .mobile-menu {
+    display: none; position: fixed; inset: 0; z-index: 150;
+    background: var(--black);
+    flex-direction: column; align-items: center; justify-content: center; gap: 40px;
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .mobile-menu.open { opacity: 1; }
+  .mobile-menu a {
+    font-family: 'Bebas Neue', sans-serif; font-size: 52px; letter-spacing: 0.06em;
+    color: var(--white); text-decoration: none; opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+  .mobile-menu a:hover { opacity: 1; }
+
+  /* ── RESPONSIVE ─────────────────────────────── */
+
+  /* Tablet: ≤ 1024px */
+  @media (max-width: 1024px) {
+    nav { padding: 24px 32px; }
+    .hero { padding: 0 32px 64px; }
+    .hero-counter { display: none; }
+    section { padding: 90px 32px; }
+    .divider { margin: 0 32px; }
+    footer { padding: 32px 32px; }
+
+    .about-grid { gap: 52px; }
+    .skills-grid { grid-template-columns: repeat(3, 1fr); }
+    .docs-grid { grid-template-columns: repeat(2, 1fr); }
+    .contact-inner { gap: 60px; }
+  }
+
+  /* Mobile: ≤ 768px */
+  @media (max-width: 768px) {
+    /* Hide custom cursor on touch */
+    .cursor, .cursor-follower { display: none; }
+    body { cursor: auto; }
+
+    /* Nav — hamburger style */
+    nav { padding: 20px 24px; }
+    .nav-links { display: none; }
+    .nav-logo { font-size: 10px; }
+    .nav-burger { display: flex; }
+    .mobile-menu { display: flex; pointer-events: none; }
+    .mobile-menu.open { pointer-events: auto; }
+
+    /* Hero */
+    .hero { padding: 0 24px 56px; min-height: 100svh; }
+    .hero-eyebrow { font-size: 9px; letter-spacing: 0.18em; margin-bottom: 14px; }
+    .hero-tagline { font-size: 18px; margin-top: 24px; }
+    .hero-scroll { display: none; }
+
+    /* Sections */
+    section { padding: 72px 24px; }
+    .divider { margin: 0 24px; }
+    .section-label { margin-bottom: 40px; }
+    footer { padding: 28px 24px; flex-direction: column; gap: 8px; text-align: center; }
+
+    /* About */
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    .about-body { font-size: 18px; }
+    .about-stats { grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 40px; }
+    .stat-num { font-size: 48px; }
+
+    /* Projects */
+    .projects-grid { grid-template-columns: 1fr; }
+    .project-card { padding: 36px 28px; }
+    .project-card.featured { grid-column: span 1; grid-template-columns: 1fr; gap: 28px; }
+    .project-arrow { top: 36px; right: 28px; }
+
+    /* Experience */
+    .exp-item { grid-template-columns: 1fr; gap: 16px; padding: 36px 0; }
+    .experience-timeline { max-width: 100%; }
+
+    /* Skills */
+    .skills-grid { grid-template-columns: repeat(2, 1fr); }
+    .skill-item { padding: 28px 20px; }
+    .skill-name { font-size: 18px; }
+
+    /* Documents */
+    .docs-grid { grid-template-columns: repeat(2, 1fr); }
+    .doc-card { padding: 28px 20px; }
+
+    /* Contact */
+    .contact-inner { grid-template-columns: 1fr; gap: 48px; }
+    .contact-big { font-size: clamp(52px, 14vw, 80px); }
+    .contact-row { flex-wrap: wrap; }
+    .contact-row-val { font-size: 14px; word-break: break-all; }
+    .btn-submit { width: 100%; justify-content: center; }
+  }
+
+  /* Small mobile: ≤ 480px */
+  @media (max-width: 480px) {
+    .skills-grid { grid-template-columns: 1fr 1fr; }
+    .docs-grid { grid-template-columns: 1fr 1fr; }
+    .about-stats { grid-template-columns: 1fr 1fr; }
+    .project-card { padding: 28px 20px; }
+    .project-card.featured .project-name { font-size: clamp(40px, 10vw, 56px); }
+  }
+
   /* NOISE OVERLAY */
   body::before {
     content: '';
@@ -428,13 +542,24 @@
 <!-- NAV -->
 <nav>
   <div class="nav-logo">AH — Portfolio</div>
-  <ul class="nav-links">
+  <ul class="nav-links" id="navLinks">
     <li><a href="#about">About</a></li>
     <li><a href="#projects">Projects</a></li>
     <li><a href="#experience">Experience</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
+  <button class="nav-burger" id="navBurger" aria-label="Menu">
+    <span></span><span></span>
+  </button>
 </nav>
+
+<!-- Mobile Menu Overlay -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about">About</a>
+  <a href="#projects">Projects</a>
+  <a href="#experience">Experience</a>
+  <a href="#contact">Contact</a>
+</div>
 
 <!-- HERO -->
 <section class="hero" id="home">
@@ -756,6 +881,22 @@
 </footer>
 
 <script>
+  // Mobile Menu
+  const burger = document.getElementById('navBurger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  function toggleMenu() {
+    const open = mobileMenu.classList.toggle('open');
+    burger.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+  function closeMenu() {
+    mobileMenu.classList.remove('open');
+    burger.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  burger.addEventListener('click', toggleMenu);
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+
   // Cursor
   const cursor = document.getElementById('cursor');
   const follower = document.getElementById('cursorFollower');
