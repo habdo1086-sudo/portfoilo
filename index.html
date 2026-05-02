@@ -3,16 +3,44 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Abdelrhman Hassan — Quality Control Engineer</title>
+<title>Abdelrahman Hassan Soliman — Quality Control Engineer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
+  /* ── THEME TOKENS ───────────────────────────── */
   :root {
-    --black: #080808;
-    --white: #f5f5f0;
-    --gray: #999;
-    --light-gray: #e0e0d8;
-    --accent: #f5f5f0;
+    --bg:       #080808;
+    --fg:       #f5f5f0;
+    --fg2:      rgba(245,245,240,0.72);
+    --fg3:      rgba(245,245,240,0.45);
+    --fg4:      rgba(245,245,240,0.25);
+    --fg5:      rgba(245,245,240,0.08);
+    --card-bg:  #111111;
+    --card-hover: #161616;
+    --border:   rgba(245,245,240,0.06);
+    --border2:  rgba(245,245,240,0.15);
+    --border3:  rgba(245,245,240,0.08);
+    --grid-line: rgba(245,245,240,0.025);
+    --outlined-stroke: rgba(245,245,240,0.6);
+    --dim-stroke: rgba(245,245,240,0.3);
+    --transition-theme: background 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+  }
+
+  html.light {
+    --bg:       #f0ede8;
+    --fg:       #0d0d0d;
+    --fg2:      rgba(13,13,13,0.72);
+    --fg3:      rgba(13,13,13,0.45);
+    --fg4:      rgba(13,13,13,0.28);
+    --fg5:      rgba(13,13,13,0.07);
+    --card-bg:  #e8e5e0;
+    --card-hover: #dedad4;
+    --border:   rgba(13,13,13,0.08);
+    --border2:  rgba(13,13,13,0.2);
+    --border3:  rgba(13,13,13,0.1);
+    --grid-line: rgba(13,13,13,0.04);
+    --outlined-stroke: rgba(13,13,13,0.5);
+    --dim-stroke: rgba(13,13,13,0.25);
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -20,28 +48,29 @@
   html { scroll-behavior: smooth; }
 
   body {
-    background: var(--black);
-    color: var(--white);
+    background: var(--bg);
+    color: var(--fg);
     font-family: 'Cormorant Garamond', serif;
     overflow-x: hidden;
     cursor: none;
+    transition: background 0.5s ease, color 0.5s ease;
   }
 
   /* Custom Cursor */
   .cursor {
     position: fixed; width: 10px; height: 10px;
-    background: var(--white); border-radius: 50%;
+    background: var(--fg); border-radius: 50%;
     pointer-events: none; z-index: 9999;
     transform: translate(-50%, -50%);
-    transition: transform 0.1s, width 0.3s, height 0.3s, background 0.3s;
+    transition: transform 0.1s, width 0.3s, height 0.3s, background 0.5s;
     mix-blend-mode: difference;
   }
   .cursor-follower {
     position: fixed; width: 36px; height: 36px;
-    border: 1px solid rgba(245,245,240,0.4); border-radius: 50%;
+    border: 1px solid var(--fg3); border-radius: 50%;
     pointer-events: none; z-index: 9998;
     transform: translate(-50%, -50%);
-    transition: all 0.18s ease;
+    transition: all 0.18s ease, border-color 0.5s;
     mix-blend-mode: difference;
   }
 
@@ -50,21 +79,43 @@
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     display: flex; align-items: center; justify-content: space-between;
     padding: 28px 52px;
-    mix-blend-mode: difference;
   }
   .nav-logo {
     font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.18em;
-    color: var(--white); text-transform: uppercase; opacity: 0.7;
+    color: var(--fg); text-transform: uppercase; opacity: 0.7;
+    transition: color 0.5s;
   }
   .nav-links {
-    display: flex; gap: 36px; list-style: none;
+    display: flex; gap: 36px; list-style: none; align-items: center;
   }
   .nav-links a {
     font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em;
-    color: var(--white); text-decoration: none; text-transform: uppercase;
-    opacity: 0.6; transition: opacity 0.3s;
+    color: var(--fg); text-decoration: none; text-transform: uppercase;
+    opacity: 0.6; transition: opacity 0.3s, color 0.5s;
   }
   .nav-links a:hover { opacity: 1; }
+
+  /* Theme Toggle */
+  .theme-toggle {
+    width: 44px; height: 24px; border-radius: 12px;
+    background: var(--fg5); border: 1px solid var(--border2);
+    cursor: pointer; position: relative;
+    transition: background 0.4s, border-color 0.4s;
+    flex-shrink: 0;
+  }
+  .theme-toggle::after {
+    content: ''; position: absolute; top: 3px; left: 3px;
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--fg); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), background 0.4s;
+  }
+  html.light .theme-toggle::after { transform: translateX(20px); }
+  .theme-toggle-wrap {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .theme-icon {
+    font-size: 12px; opacity: 0.4; transition: opacity 0.3s;
+    font-style: normal; user-select: none;
+  }
 
   /* HERO */
   .hero {
@@ -75,41 +126,43 @@
   .hero-bg {
     position: absolute; inset: 0;
     background:
-      repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(245,245,240,0.025) 80px),
-      repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(245,245,240,0.025) 80px);
+      repeating-linear-gradient(0deg, transparent, transparent 79px, var(--grid-line) 80px),
+      repeating-linear-gradient(90deg, transparent, transparent 79px, var(--grid-line) 80px);
     background-size: 80px 80px;
+    transition: background 0.5s;
   }
   .hero-overlay {
     position: absolute; inset: 0;
-    background: radial-gradient(ellipse 60% 70% at 80% 50%, rgba(245,245,240,0.04) 0%, transparent 70%);
+    background: radial-gradient(ellipse 60% 70% at 80% 50%, var(--fg5) 0%, transparent 70%);
   }
   .hero-counter {
     position: absolute; top: 50%; right: 52px; transform: translateY(-50%);
     font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em;
-    color: rgba(245,245,240,0.25); writing-mode: vertical-rl;
-    text-transform: uppercase;
+    color: var(--fg4); writing-mode: vertical-rl;
+    text-transform: uppercase; transition: color 0.5s;
   }
 
   .hero-eyebrow {
     font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.3em;
-    color: rgba(245,245,240,0.4); text-transform: uppercase; margin-bottom: 20px;
+    color: var(--fg3); text-transform: uppercase; margin-bottom: 20px;
     opacity: 0; animation: fadeUp 1s ease 0.3s forwards;
   }
   .hero-name {
     font-family: 'Bebas Neue', sans-serif;
     font-size: clamp(72px, 11vw, 180px);
-    line-height: 0.88; letter-spacing: 0.02em; color: var(--white);
+    line-height: 0.88; letter-spacing: 0.02em; color: var(--fg);
     opacity: 0; animation: fadeUp 1s ease 0.5s forwards;
+    transition: color 0.5s;
   }
   .hero-name span { display: block; }
   .hero-name .outlined {
-    -webkit-text-stroke: 1px rgba(245,245,240,0.6);
+    -webkit-text-stroke: 1px var(--outlined-stroke);
     color: transparent;
   }
   .hero-tagline {
     margin-top: 36px;
     font-size: 22px; font-style: italic; font-weight: 300;
-    color: rgba(245,245,240,0.55); max-width: 420px;
+    color: var(--fg3); max-width: 420px;
     opacity: 0; animation: fadeUp 1s ease 0.8s forwards;
   }
   .hero-scroll {
@@ -119,33 +172,34 @@
   }
   .hero-scroll span {
     font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.3em;
-    text-transform: uppercase; color: rgba(245,245,240,0.3);
+    text-transform: uppercase; color: var(--fg4);
   }
   .scroll-line {
-    width: 1px; height: 60px; background: rgba(245,245,240,0.2);
+    width: 1px; height: 60px; background: var(--fg4);
     animation: scrollLine 2s ease infinite;
   }
 
   /* DIVIDER */
   .divider {
-    height: 1px; background: rgba(245,245,240,0.08);
-    margin: 0 52px;
+    height: 1px; background: var(--border3);
+    margin: 0 52px; transition: background 0.5s;
   }
 
   /* SECTION BASE */
   section { padding: 120px 52px; }
   .section-label {
     font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.3em;
-    text-transform: uppercase; color: rgba(245,245,240,0.35);
+    text-transform: uppercase; color: var(--fg3);
     margin-bottom: 64px; display: flex; align-items: center; gap: 20px;
+    transition: color 0.5s;
   }
   .section-label::after {
     content: ''; flex: 1; max-width: 80px; height: 1px;
-    background: rgba(245,245,240,0.2);
+    background: var(--border2); transition: background 0.5s;
   }
   .section-num {
     font-family: 'DM Mono', monospace; font-size: 9px;
-    color: rgba(245,245,240,0.2); margin-right: 12px;
+    color: var(--fg4); margin-right: 12px;
   }
 
   /* ABOUT */
@@ -157,10 +211,10 @@
     font-size: clamp(52px, 6vw, 96px);
     line-height: 0.9; letter-spacing: 0.02em;
   }
-  .about-heading .dim { -webkit-text-stroke: 1px rgba(245,245,240,0.3); color: transparent; }
+  .about-heading .dim { -webkit-text-stroke: 1px var(--dim-stroke); color: transparent; }
   .about-body {
     font-size: 20px; line-height: 1.8; font-weight: 300;
-    color: rgba(245,245,240,0.72); padding-top: 12px;
+    color: var(--fg2); padding-top: 12px; transition: color 0.5s;
   }
   .about-stats {
     display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 60px;
@@ -168,11 +222,11 @@
   .stat-item {}
   .stat-num {
     font-family: 'Bebas Neue', sans-serif; font-size: 64px; line-height: 1;
-    color: var(--white);
+    color: var(--fg); transition: color 0.5s;
   }
   .stat-label {
     font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em;
-    text-transform: uppercase; color: rgba(245,245,240,0.35); margin-top: 6px;
+    text-transform: uppercase; color: var(--fg3); margin-top: 6px; transition: color 0.5s;
   }
 
   /* PROJECTS */
@@ -181,26 +235,26 @@
   }
   .project-card {
     position: relative; overflow: hidden;
-    background: #111; padding: 52px 48px;
-    border: 1px solid rgba(245,245,240,0.06);
-    transition: background 0.4s; cursor: none;
+    background: var(--card-bg); padding: 52px 48px;
+    border: 1px solid var(--border);
+    transition: background 0.4s, border-color 0.5s; cursor: none;
   }
-  .project-card:hover { background: #161616; }
+  .project-card:hover { background: var(--card-hover); }
   .project-card:hover .project-arrow { transform: translate(4px, -4px); }
   .project-card:hover .project-num { opacity: 1; }
   .project-num {
     font-family: 'DM Mono', monospace; font-size: 10px;
-    color: rgba(245,245,240,0.2); margin-bottom: 36px;
-    transition: opacity 0.3s; opacity: 0.5;
+    color: var(--fg4); margin-bottom: 36px;
+    transition: opacity 0.3s, color 0.5s; opacity: 0.5;
   }
   .project-name {
     font-family: 'Bebas Neue', sans-serif;
     font-size: clamp(32px, 3.5vw, 56px); letter-spacing: 0.02em;
-    line-height: 1; margin-bottom: 16px;
+    line-height: 1; margin-bottom: 16px; color: var(--fg); transition: color 0.5s;
   }
   .project-sub {
     font-size: 14px; font-style: italic; font-weight: 300;
-    color: rgba(245,245,240,0.4); margin-bottom: 32px;
+    color: var(--fg3); margin-bottom: 32px; transition: color 0.5s;
   }
   .project-tags {
     display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 40px;
@@ -208,23 +262,26 @@
   .tag {
     font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.15em;
     text-transform: uppercase; padding: 6px 14px;
-    border: 1px solid rgba(245,245,240,0.15); color: rgba(245,245,240,0.5);
+    border: 1px solid var(--border2); color: var(--fg3);
+    transition: border-color 0.5s, color 0.5s;
   }
   .project-details {
-    list-style: none; border-top: 1px solid rgba(245,245,240,0.08); padding-top: 28px;
+    list-style: none; border-top: 1px solid var(--border3); padding-top: 28px;
+    transition: border-color 0.5s;
   }
   .project-details li {
-    font-size: 15px; font-weight: 300; color: rgba(245,245,240,0.6);
-    padding: 8px 0; border-bottom: 1px solid rgba(245,245,240,0.04);
+    font-size: 15px; font-weight: 300; color: var(--fg2);
+    padding: 8px 0; border-bottom: 1px solid var(--border);
     display: flex; align-items: flex-start; gap: 12px;
+    transition: color 0.5s, border-color 0.5s;
   }
   .project-details li::before {
-    content: '—'; color: rgba(245,245,240,0.2); flex-shrink: 0; margin-top: 1px;
+    content: '—'; color: var(--fg4); flex-shrink: 0; margin-top: 1px;
   }
   .project-arrow {
     position: absolute; top: 52px; right: 48px;
-    font-size: 24px; color: rgba(245,245,240,0.2);
-    transition: transform 0.3s;
+    font-size: 24px; color: var(--fg4);
+    transition: transform 0.3s, color 0.5s;
   }
   .project-card.featured {
     grid-column: span 2;
@@ -236,45 +293,47 @@
   .experience-timeline { max-width: 900px; }
   .exp-item {
     display: grid; grid-template-columns: 200px 1fr; gap: 52px;
-    padding: 52px 0; border-top: 1px solid rgba(245,245,240,0.08);
-    position: relative;
+    padding: 52px 0; border-top: 1px solid var(--border3);
+    position: relative; transition: border-color 0.5s;
   }
-  .exp-item:last-child { border-bottom: 1px solid rgba(245,245,240,0.08); }
+  .exp-item:last-child { border-bottom: 1px solid var(--border3); }
   .exp-period {
     font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.15em;
-    color: rgba(245,245,240,0.3); padding-top: 6px;
+    color: var(--fg3); padding-top: 6px; transition: color 0.5s;
   }
   .exp-current {
     display: inline-block; margin-top: 10px;
     font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em;
     text-transform: uppercase; padding: 4px 10px;
-    border: 1px solid rgba(245,245,240,0.3); color: rgba(245,245,240,0.5);
+    border: 1px solid var(--border2); color: var(--fg3);
+    transition: border-color 0.5s, color 0.5s;
   }
   .exp-role {
     font-family: 'Bebas Neue', sans-serif;
     font-size: clamp(28px, 3vw, 48px); letter-spacing: 0.02em; line-height: 1;
-    margin-bottom: 8px;
+    margin-bottom: 8px; color: var(--fg); transition: color 0.5s;
   }
   .exp-company {
     font-size: 16px; font-style: italic; font-weight: 300;
-    color: rgba(245,245,240,0.45); margin-bottom: 24px;
+    color: var(--fg3); margin-bottom: 24px; transition: color 0.5s;
   }
   .exp-duties { list-style: none; }
   .exp-duties li {
-    font-size: 16px; font-weight: 300; color: rgba(245,245,240,0.6);
-    padding: 6px 0; display: flex; gap: 12px;
+    font-size: 16px; font-weight: 300; color: var(--fg2);
+    padding: 6px 0; display: flex; gap: 12px; transition: color 0.5s;
   }
-  .exp-duties li::before { content: '→'; color: rgba(245,245,240,0.25); }
+  .exp-duties li::before { content: '→'; color: var(--fg4); }
 
   /* SKILLS */
   .skills-grid {
     display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;
   }
   .skill-item {
-    padding: 36px 32px; border: 1px solid rgba(245,245,240,0.06);
-    position: relative; overflow: hidden; transition: background 0.3s;
+    padding: 36px 32px; border: 1px solid var(--border);
+    position: relative; overflow: hidden;
+    transition: background 0.3s, border-color 0.5s;
   }
-  .skill-item:hover { background: #111; }
+  .skill-item:hover { background: var(--card-bg); }
   .skill-item:hover .skill-icon { opacity: 1; transform: scale(1.1); }
   .skill-icon {
     font-size: 28px; margin-bottom: 20px; opacity: 0.3;
@@ -282,51 +341,16 @@
   }
   .skill-name {
     font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.05em;
-    margin-bottom: 8px;
+    margin-bottom: 8px; color: var(--fg); transition: color 0.5s;
   }
   .skill-level {
     font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em;
-    color: rgba(245,245,240,0.25); text-transform: uppercase;
+    color: var(--fg4); text-transform: uppercase; transition: color 0.5s;
   }
   .skill-bar {
     position: absolute; bottom: 0; left: 0; height: 2px;
-    background: rgba(245,245,240,0.2);
+    background: var(--fg3); transition: background 0.5s;
   }
-
-  /* DOCUMENTS */
-  .docs-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;
-  }
-  .doc-card {
-    padding: 40px 32px; border: 1px solid rgba(245,245,240,0.06);
-    display: flex; flex-direction: column; gap: 20px;
-    transition: background 0.3s; cursor: pointer;
-  }
-  .doc-card:hover { background: #111; }
-  .doc-icon {
-    width: 44px; height: 56px;
-    border: 1px solid rgba(245,245,240,0.2);
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.1em;
-    color: rgba(245,245,240,0.4); text-transform: uppercase;
-    position: relative;
-  }
-  .doc-icon::after {
-    content: ''; position: absolute; top: -1px; right: -1px;
-    width: 14px; height: 14px;
-    background: rgba(245,245,240,0.15);
-    clip-path: polygon(100% 0, 100% 100%, 0 100%);
-  }
-  .doc-name {
-    font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.04em;
-    line-height: 1.1;
-  }
-  .doc-dl {
-    font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em;
-    text-transform: uppercase; color: rgba(245,245,240,0.3);
-    margin-top: auto; display: flex; align-items: center; gap: 8px;
-  }
-  .doc-dl::before { content: '↓'; }
 
   /* CONTACT */
   .contact-inner {
@@ -334,59 +358,63 @@
   }
   .contact-big {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(60px, 8vw, 120px); line-height: 0.88;
+    font-size: clamp(60px, 8vw, 120px); line-height: 0.88; color: var(--fg);
+    transition: color 0.5s;
   }
-  .contact-big .dim { -webkit-text-stroke: 1px rgba(245,245,240,0.3); color: transparent; }
+  .contact-big .dim { -webkit-text-stroke: 1px var(--dim-stroke); color: transparent; }
   .contact-info { margin-top: 52px; }
   .contact-row {
     display: flex; align-items: center; gap: 20px;
-    padding: 20px 0; border-bottom: 1px solid rgba(245,245,240,0.08);
+    padding: 20px 0; border-bottom: 1px solid var(--border3);
+    transition: border-color 0.5s;
   }
   .contact-row-label {
     font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em;
-    text-transform: uppercase; color: rgba(245,245,240,0.3); width: 80px;
+    text-transform: uppercase; color: var(--fg3); width: 80px; transition: color 0.5s;
   }
   .contact-row-val {
-    font-size: 16px; font-weight: 300; color: rgba(245,245,240,0.8);
-    text-decoration: none;
+    font-size: 16px; font-weight: 300; color: var(--fg2);
+    text-decoration: none; transition: color 0.3s;
   }
-  .contact-row-val:hover { color: var(--white); }
+  .contact-row-val:hover { color: var(--fg); }
 
   /* FORM */
   .form-group { margin-bottom: 28px; }
   .form-group label {
     font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em;
-    text-transform: uppercase; color: rgba(245,245,240,0.3);
-    display: block; margin-bottom: 10px;
+    text-transform: uppercase; color: var(--fg3);
+    display: block; margin-bottom: 10px; transition: color 0.5s;
   }
   .form-group input, .form-group textarea {
     width: 100%; background: transparent;
-    border: none; border-bottom: 1px solid rgba(245,245,240,0.15);
-    color: var(--white); font-family: 'Cormorant Garamond', serif;
+    border: none; border-bottom: 1px solid var(--border2);
+    color: var(--fg); font-family: 'Cormorant Garamond', serif;
     font-size: 18px; font-weight: 300; padding: 12px 0;
-    outline: none; transition: border-color 0.3s;
+    outline: none; transition: border-color 0.3s, color 0.5s;
   }
+  .form-group input::placeholder, .form-group textarea::placeholder { color: var(--fg4); }
   .form-group input:focus, .form-group textarea:focus {
-    border-color: rgba(245,245,240,0.5);
+    border-color: var(--fg2);
   }
   .form-group textarea { resize: none; height: 100px; }
   .btn-submit {
     display: inline-flex; align-items: center; gap: 14px;
-    background: var(--white); color: var(--black);
+    background: var(--fg); color: var(--bg);
     font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.2em;
     text-transform: uppercase; padding: 18px 36px;
-    border: none; cursor: pointer; transition: opacity 0.3s;
+    border: none; cursor: pointer; transition: opacity 0.3s, background 0.5s, color 0.5s;
   }
   .btn-submit:hover { opacity: 0.85; }
 
   /* FOOTER */
   footer {
-    padding: 40px 52px; border-top: 1px solid rgba(245,245,240,0.08);
+    padding: 40px 52px; border-top: 1px solid var(--border3);
     display: flex; align-items: center; justify-content: space-between;
+    transition: border-color 0.5s;
   }
   footer p {
     font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.15em;
-    color: rgba(245,245,240,0.2); text-transform: uppercase;
+    color: var(--fg4); text-transform: uppercase; transition: color 0.5s;
   }
 
   /* ANIMATIONS */
@@ -420,7 +448,7 @@
   }
   .nav-burger span {
     display: block; width: 24px; height: 1px;
-    background: var(--white); transition: transform 0.3s, opacity 0.3s;
+    background: var(--fg); transition: transform 0.3s, opacity 0.3s, background 0.5s;
   }
   .nav-burger.open span:first-child { transform: translateY(3.5px) rotate(45deg); }
   .nav-burger.open span:last-child  { transform: translateY(-3.5px) rotate(-45deg); }
@@ -428,17 +456,29 @@
   /* Mobile full-screen menu */
   .mobile-menu {
     display: none; position: fixed; inset: 0; z-index: 150;
-    background: var(--black);
+    background: var(--bg);
     flex-direction: column; align-items: center; justify-content: center; gap: 40px;
-    opacity: 0; transition: opacity 0.3s;
+    opacity: 0; transition: opacity 0.3s, background 0.5s;
   }
   .mobile-menu.open { opacity: 1; }
   .mobile-menu a {
     font-family: 'Bebas Neue', sans-serif; font-size: 52px; letter-spacing: 0.06em;
-    color: var(--white); text-decoration: none; opacity: 0.7;
-    transition: opacity 0.2s;
+    color: var(--fg); text-decoration: none; opacity: 0.7;
+    transition: opacity 0.2s, color 0.5s;
   }
   .mobile-menu a:hover { opacity: 1; }
+
+  /* Theme FAB (mobile) */
+  .theme-fab {
+    display: none; position: fixed; bottom: 24px; right: 24px; z-index: 300;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--fg); color: var(--bg);
+    border: none; cursor: pointer; font-size: 18px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    transition: background 0.5s, color 0.5s, transform 0.2s;
+    align-items: center; justify-content: center;
+  }
+  .theme-fab:hover { transform: scale(1.1); }
 
   /* ── RESPONSIVE ─────────────────────────────── */
 
@@ -470,6 +510,7 @@
     .nav-burger { display: flex; }
     .mobile-menu { display: flex; pointer-events: none; }
     .mobile-menu.open { pointer-events: auto; }
+    .theme-fab { display: flex; }
 
     /* Hero */
     .hero { padding: 0 24px 56px; min-height: 100svh; }
@@ -547,13 +588,21 @@
     <li><a href="#projects">Projects</a></li>
     <li><a href="#experience">Experience</a></li>
     <li><a href="#contact">Contact</a></li>
+    <li>
+      <div class="theme-toggle-wrap">
+        <i class="theme-icon" id="themeIconDark">◑</i>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode"></button>
+        <i class="theme-icon" id="themeIconLight">○</i>
+      </div>
+    </li>
   </ul>
   <button class="nav-burger" id="navBurger" aria-label="Menu">
     <span></span><span></span>
   </button>
 </nav>
 
-<!-- Mobile Menu Overlay -->
+<!-- Mobile floating theme toggle -->
+<button class="theme-fab" id="themeFab" aria-label="Toggle theme">◑</button>
 <div class="mobile-menu" id="mobileMenu">
   <a href="#about">About</a>
   <a href="#projects">Projects</a>
@@ -568,7 +617,7 @@
   <div class="hero-counter">Cairo · Egypt · 2025</div>
   <div class="hero-eyebrow">Quality Control Engineer — Civil Engineering</div>
   <h1 class="hero-name">
-    <span>ABDELRHMAN</span>
+    <span>ABDELRAHMAN</span>
     <span class="outlined">HASSAN</span>
   </h1>
   <p class="hero-tagline">Ensuring Quality.<br>Delivering Excellence.</p>
@@ -592,25 +641,25 @@
           <div class="stat-label">Years of Experience</div>
         </div>
         <div class="stat-item">
-          <div class="stat-num">4</div>
+          <div class="stat-num">7+</div>
           <div class="stat-label">Major Projects</div>
         </div>
         <div class="stat-item">
-          <div class="stat-num">11</div>
-          <div class="stat-label">Buildings — ZED East</div>
+          <div class="stat-num">36</div>
+          <div class="stat-label">Villas — Mtn View</div>
         </div>
         <div class="stat-item">
-          <div class="stat-num">2</div>
+          <div class="stat-num">3</div>
           <div class="stat-label">Leading Firms</div>
         </div>
       </div>
     </div>
     <div class="reveal reveal-delay-1">
       <p class="about-body">
-        Detail-oriented Quality Control Engineer with a solid background in civil engineering and construction management. Experienced in site inspections, QA/QC processes, and ensuring compliance with project specifications and international standards.
+        Detail-oriented Quality Control Engineer with a strong background in civil engineering and construction management. I specialize in ensuring compliance with project specifications, implementing QA/QC procedures, and maintaining high-quality standards across all construction phases.
       </p>
       <p class="about-body" style="margin-top:28px;">
-        Skilled in documentation, reporting, and coordination with multidisciplinary teams to deliver high-quality projects. From excavation to handover — every phase is held to the highest standard.
+        I have hands-on experience in large-scale projects including data centers, residential compounds, and industrial facilities — with a focus on delivering durable, compliant, and high-performance structures.
       </p>
     </div>
   </div>
@@ -623,80 +672,117 @@
   <div class="section-label"><span class="section-num">02</span> Selected Projects</div>
   <div class="projects-grid">
 
-    <!-- Featured -->
+    <!-- Featured: Data Center -->
     <div class="project-card featured reveal">
       <div>
-        <div class="project-num">01 / Featured</div>
-        <div class="project-name">ZED EAST<br>CLUB</div>
-        <div class="project-sub">New Cairo, Egypt</div>
+        <div class="project-num">01 / Current</div>
+        <div class="project-name">DATA CENTER<br>PORT SAID</div>
+        <div class="project-sub">Sterling &amp; Wilson — 2026–Present</div>
         <div class="project-tags">
-          <span class="tag">Structural</span>
-          <span class="tag">Finishing</span>
-          <span class="tag">Waterproofing</span>
-          <span class="tag">Handover</span>
+          <span class="tag">Piling</span>
+          <span class="tag">Foundations</span>
+          <span class="tag">Superstructure</span>
+          <span class="tag">ITP</span>
         </div>
       </div>
       <div>
         <ul class="project-details">
-          <li>Managed QC operations across 11 buildings</li>
-          <li>Oversaw full construction cycle from excavation through final handover</li>
-          <li>Inspected concrete pours, finishing layers, and waterproofing systems</li>
-          <li>Ensured compliance with project specs and consultant requirements</li>
+          <li>QA/QC for piling, foundations, substructure and superstructure</li>
+          <li>Monitoring columns, slabs, and beams construction</li>
+          <li>Reviewing material submittals, ITPs, Method Statements &amp; IRs</li>
+          <li>Managing NCRs, corrective actions, and final inspections</li>
+          <li>Ensuring full compliance with drawings and specifications</li>
         </ul>
         <div class="project-arrow">↗</div>
       </div>
     </div>
 
-    <!-- Card 2 -->
+    <!-- ZED East -->
     <div class="project-card reveal reveal-delay-1">
       <div class="project-num">02</div>
-      <div class="project-name">CAIRO<br>FESTIVAL<br>LIVING</div>
-      <div class="project-sub">Stream Development</div>
+      <div class="project-name">ZED EAST<br>CLUB</div>
+      <div class="project-sub">GAMA Construction — New Cairo</div>
+      <div class="project-tags">
+        <span class="tag">Structural</span>
+        <span class="tag">Waterproofing</span>
+        <span class="tag">Finishing</span>
+      </div>
+      <ul class="project-details">
+        <li>Managed QA/QC for 11 buildings across all phases</li>
+        <li>Inspected concrete, blockwork, waterproofing &amp; finishes</li>
+        <li>Covered full cycle from excavation to handover</li>
+      </ul>
+      <div class="project-arrow">↗</div>
+    </div>
+
+    <!-- Mountain View -->
+    <div class="project-card reveal reveal-delay-2">
+      <div class="project-num">03</div>
+      <div class="project-name">MOUNTAIN<br>VIEW I CITY</div>
+      <div class="project-sub">Hazem Mansour — Residential</div>
+      <div class="project-tags">
+        <span class="tag">Villas</span>
+        <span class="tag">Concrete</span>
+        <span class="tag">External Finishes</span>
+      </div>
+      <ul class="project-details">
+        <li>QA/QC supervision for 36 villas</li>
+        <li>Supervised concrete works and external finishes</li>
+        <li>Maintained compliance with project specifications</li>
+      </ul>
+      <div class="project-arrow">↗</div>
+    </div>
+
+    <!-- Stream Cairo -->
+    <div class="project-card reveal reveal-delay-3">
+      <div class="project-num">04</div>
+      <div class="project-name">STREAM<br>CAIRO FESTIVAL</div>
+      <div class="project-sub">GAMA Construction — Residential</div>
       <div class="project-tags">
         <span class="tag">QA Docs</span>
         <span class="tag">NCR</span>
         <span class="tag">IRs</span>
       </div>
       <ul class="project-details">
-        <li>Supervised structural and finishing works on residential towers</li>
-        <li>Prepared Inspection Requests, Method Statements & QA Documents</li>
-        <li>Coordinated NCR closure with consultant teams</li>
+        <li>Supervised structural and finishing works</li>
+        <li>Prepared IRs, Method Statements &amp; QA documents</li>
+        <li>Ensured compliance with international standards</li>
       </ul>
       <div class="project-arrow">↗</div>
     </div>
 
-    <!-- Card 3 -->
-    <div class="project-card reveal reveal-delay-2">
-      <div class="project-num">03</div>
-      <div class="project-name">AL<br>BOROUJ</div>
-      <div class="project-sub">Administrative Complex, 3 Zones</div>
-      <div class="project-tags">
-        <span class="tag">Façade</span>
-        <span class="tag">Finishing</span>
-        <span class="tag">Admin</span>
-      </div>
-      <ul class="project-details">
-        <li>Oversaw finishing and façade quality across three administrative zones</li>
-        <li>Maintained QC records and site documentation</li>
-        <li>Liaised between contractors and project management teams</li>
-      </ul>
-      <div class="project-arrow">↗</div>
-    </div>
-
-    <!-- Card 4 -->
-    <div class="project-card reveal reveal-delay-3">
-      <div class="project-num">04</div>
+    <!-- Unilever -->
+    <div class="project-card reveal">
+      <div class="project-num">05</div>
       <div class="project-name">UNILEVER<br>FACTORY</div>
-      <div class="project-sub">Industrial Construction</div>
+      <div class="project-sub">Hazem Mansour — Industrial</div>
       <div class="project-tags">
         <span class="tag">Industrial</span>
         <span class="tag">Epoxy</span>
-        <span class="tag">Tanks</span>
+        <span class="tag">Steel Tanks</span>
       </div>
       <ul class="project-details">
-        <li>QC control for tanks, pump rooms, and utility infrastructure</li>
-        <li>Supervised epoxy floor application to industrial specifications</li>
-        <li>Ensured compliance with factory operational and safety standards</li>
+        <li>Steel tank structures and pump room QC</li>
+        <li>Epoxy flooring and industrial finishing</li>
+        <li>Landscaping and drainage systems</li>
+      </ul>
+      <div class="project-arrow">↗</div>
+    </div>
+
+    <!-- Al Borouj -->
+    <div class="project-card reveal reveal-delay-1">
+      <div class="project-num">06</div>
+      <div class="project-name">AL BOROUJ<br>PROJECT</div>
+      <div class="project-sub">GAMA Construction — Admin Complex</div>
+      <div class="project-tags">
+        <span class="tag">Curtain Wall</span>
+        <span class="tag">Gypsum</span>
+        <span class="tag">Façade</span>
+      </div>
+      <ul class="project-details">
+        <li>Oversaw curtain wall, gypsum &amp; bathroom finishing</li>
+        <li>Ensured alignment with drawings and specifications</li>
+        <li>Maintained QC records across 3 admin zones</li>
       </ul>
       <div class="project-arrow">↗</div>
     </div>
@@ -713,33 +799,49 @@
 
     <div class="exp-item reveal">
       <div>
-        <div class="exp-period">2025 — Present</div>
+        <div class="exp-period">2026 — Present</div>
         <div class="exp-current">Current</div>
       </div>
       <div>
         <div class="exp-role">Quality Control<br>Engineer</div>
-        <div class="exp-company">GAMA Construction</div>
+        <div class="exp-company">Sterling &amp; Wilson</div>
         <ul class="exp-duties">
-          <li>Preparing and managing QA/QC reports and site documentation</li>
-          <li>Conducting Inspection Requests (IR) and on-site quality checks</li>
-          <li>Issuing and closing Non-Conformance Reports (NCRs)</li>
-          <li>Coordinating with project engineers and consultant teams</li>
+          <li>QA/QC for full construction cycle — structure and finishing</li>
+          <li>Daily site inspections and contractor coordination</li>
+          <li>Documentation, compliance management, and NCR handling</li>
+          <li>Currently on Data Center project, Port Said</li>
         </ul>
       </div>
     </div>
 
     <div class="exp-item reveal reveal-delay-1">
       <div>
+        <div class="exp-period">2025 — 2026</div>
+      </div>
+      <div>
+        <div class="exp-role">Quality Control<br>Engineer</div>
+        <div class="exp-company">GAMA Construction</div>
+        <ul class="exp-duties">
+          <li>Reviewed material submittals and technical data sheets</li>
+          <li>Prepared and reviewed method statements and ITPs</li>
+          <li>Issued NCRs, site observations, and QA/QC reports</li>
+          <li>Projects: ZED East Club, Stream Cairo Festival Living, Al Borouj</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item reveal reveal-delay-2">
+      <div>
         <div class="exp-period">2022 — 2025</div>
       </div>
       <div>
-        <div class="exp-role">QC & Site<br>Engineer</div>
+        <div class="exp-role">QC &amp; Site<br>Engineer</div>
         <div class="exp-company">Hazem Mansour Contracting</div>
         <ul class="exp-duties">
           <li>Full site supervision across structural and finishing phases</li>
           <li>Cost estimation and quantity surveying support</li>
           <li>Coordination between subcontractors and main project teams</li>
-          <li>Prepared QA documentation and method statements</li>
+          <li>Projects: Unilever Factory, Mountain View I City, Erwena Water Factory</li>
         </ul>
       </div>
     </div>
@@ -757,79 +859,105 @@
       <div class="skill-icon">⬛</div>
       <div class="skill-name">QA/QC Management</div>
       <div class="skill-level">Core Expertise</div>
-      <div class="skill-bar" style="width:92%"></div>
+      <div class="skill-bar" style="width:95%"></div>
     </div>
     <div class="skill-item reveal reveal-delay-1">
       <div class="skill-icon">◎</div>
-      <div class="skill-name">Site Inspection</div>
+      <div class="skill-name">Inspection & Testing</div>
       <div class="skill-level">Core Expertise</div>
       <div class="skill-bar" style="width:95%"></div>
     </div>
     <div class="skill-item reveal reveal-delay-2">
-      <div class="skill-icon">△</div>
-      <div class="skill-name">AutoCAD / ETABS / SAFE</div>
-      <div class="skill-level">Software</div>
-      <div class="skill-bar" style="width:78%"></div>
+      <div class="skill-icon">✦</div>
+      <div class="skill-name">NCR & Corrective Actions</div>
+      <div class="skill-level">QA Process</div>
+      <div class="skill-bar" style="width:93%"></div>
     </div>
     <div class="skill-item reveal reveal-delay-3">
-      <div class="skill-icon">◈</div>
-      <div class="skill-name">Primavera P6</div>
-      <div class="skill-level">Software</div>
-      <div class="skill-bar" style="width:75%"></div>
+      <div class="skill-icon">☰</div>
+      <div class="skill-name">Project Documentation</div>
+      <div class="skill-level">Documentation</div>
+      <div class="skill-bar" style="width:92%"></div>
     </div>
     <div class="skill-item reveal">
-      <div class="skill-icon">☰</div>
-      <div class="skill-name">Method Statements</div>
-      <div class="skill-level">Documentation</div>
-      <div class="skill-bar" style="width:90%"></div>
+      <div class="skill-icon">△</div>
+      <div class="skill-name">AutoCAD / SAP2000 / ETABS</div>
+      <div class="skill-level">Software</div>
+      <div class="skill-bar" style="width:80%"></div>
     </div>
     <div class="skill-item reveal reveal-delay-1">
-      <div class="skill-icon">✦</div>
-      <div class="skill-name">IR / MIR / ITP</div>
-      <div class="skill-level">QA Documents</div>
-      <div class="skill-bar" style="width:93%"></div>
+      <div class="skill-icon">◈</div>
+      <div class="skill-name">Primavera P6</div>
+      <div class="skill-level">Planning Software</div>
+      <div class="skill-bar" style="width:78%"></div>
     </div>
     <div class="skill-item reveal reveal-delay-2">
       <div class="skill-icon">⊞</div>
       <div class="skill-name">Microsoft Office</div>
       <div class="skill-level">Productivity</div>
-      <div class="skill-bar" style="width:88%"></div>
+      <div class="skill-bar" style="width:90%"></div>
     </div>
     <div class="skill-item reveal reveal-delay-3">
       <div class="skill-icon">◻</div>
-      <div class="skill-name">NCR Management</div>
-      <div class="skill-level">QA Process</div>
-      <div class="skill-bar" style="width:91%"></div>
+      <div class="skill-name">IR / ITP / Method Statements</div>
+      <div class="skill-level">QA Documents</div>
+      <div class="skill-bar" style="width:94%"></div>
     </div>
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- DOCUMENTS -->
-<section id="documents">
-  <div class="section-label"><span class="section-num">05</span> Documents</div>
-  <div class="docs-grid">
-    <div class="doc-card reveal">
-      <div class="doc-icon">PDF</div>
-      <div class="doc-name">QA/QC Reports</div>
-      <div class="doc-dl">Request Document</div>
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-label"><span class="section-num">05</span> Education & Certifications</div>
+  <div class="experience-timeline">
+
+    <div class="exp-item reveal">
+      <div>
+        <div class="exp-period">B.Sc.</div>
+      </div>
+      <div>
+        <div class="exp-role">Civil<br>Engineering</div>
+        <div class="exp-company">El Gazeera Academy — Cairo</div>
+        <ul class="exp-duties">
+          <li>Grade: Very Good — GPA 2.81</li>
+          <li>Graduation Project: Construction &amp; Project Management — Excellent</li>
+          <li>Planning using Primavera P6, cost estimation using Excel</li>
+        </ul>
+      </div>
     </div>
-    <div class="doc-card reveal reveal-delay-1">
-      <div class="doc-icon">PDF</div>
-      <div class="doc-name">Method Statements</div>
-      <div class="doc-dl">Request Document</div>
+
+    <div class="exp-item reveal reveal-delay-1">
+      <div>
+        <div class="exp-period">Certificate</div>
+      </div>
+      <div>
+        <div class="exp-role">Primavera P6<br>Workshop</div>
+        <div class="exp-company">Planning &amp; Controlling</div>
+        <ul class="exp-duties">
+          <li>Scheduling and resource allocation</li>
+          <li>Cost control and reporting</li>
+        </ul>
+      </div>
     </div>
-    <div class="doc-card reveal reveal-delay-2">
-      <div class="doc-icon">PDF</div>
-      <div class="doc-name">Inspection Requests</div>
-      <div class="doc-dl">Request Document</div>
+
+    <div class="exp-item reveal reveal-delay-2">
+      <div>
+        <div class="exp-period">Internships</div>
+      </div>
+      <div>
+        <div class="exp-role">Field<br>Training</div>
+        <div class="exp-company">4 Organizations</div>
+        <ul class="exp-duties">
+          <li>Arab Contractors — piling works and deep foundations</li>
+          <li>Samcrete — bridge piling and excavation supervision</li>
+          <li>Ministry of Housing — construction equipment and site exposure</li>
+          <li>Conserve Company — New Giza villas, concrete and structural works</li>
+        </ul>
+      </div>
     </div>
-    <div class="doc-card reveal reveal-delay-3">
-      <div class="doc-icon">PDF</div>
-      <div class="doc-name">Material Submittals</div>
-      <div class="doc-dl">Request Document</div>
-    </div>
+
   </div>
 </section>
 
@@ -854,6 +982,10 @@
           <span class="contact-row-label">Location</span>
           <span class="contact-row-val">Cairo, Egypt</span>
         </div>
+        <div class="contact-row">
+          <span class="contact-row-label">Languages</span>
+          <span class="contact-row-val">Arabic (Native) · English (Very Good)</span>
+        </div>
       </div>
     </div>
     <div class="reveal reveal-delay-1">
@@ -876,12 +1008,34 @@
 
 <!-- FOOTER -->
 <footer>
-  <p>© 2025 Abdelrhman Hassan Soliman</p>
+  <p>© 2026 Abdelrahman Hassan Soliman</p>
   <p>Quality Control Engineer — Cairo, Egypt</p>
 </footer>
 
 <script>
-  // Mobile Menu
+  // ── THEME TOGGLE ─────────────────────────────
+  const html = document.documentElement;
+  const themeToggle = document.getElementById('themeToggle');
+  const themeFab    = document.getElementById('themeFab');
+
+  // Restore saved preference
+  if (localStorage.getItem('theme') === 'light') {
+    html.classList.add('light');
+  }
+
+  function toggleTheme() {
+    const isLight = html.classList.toggle('light');
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    themeFab.textContent = isLight ? '●' : '◑';
+  }
+
+  themeToggle.addEventListener('click', toggleTheme);
+  themeFab.addEventListener('click', toggleTheme);
+
+  // Set initial FAB icon
+  themeFab.textContent = html.classList.contains('light') ? '●' : '◑';
+
+  // ── MOBILE MENU ───────────────────────────────
   const burger = document.getElementById('navBurger');
   const mobileMenu = document.getElementById('mobileMenu');
   function toggleMenu() {
@@ -897,8 +1051,8 @@
   burger.addEventListener('click', toggleMenu);
   mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
 
-  // Cursor
-  const cursor = document.getElementById('cursor');
+  // ── CUSTOM CURSOR ────────────────────────────
+  const cursor   = document.getElementById('cursor');
   const follower = document.getElementById('cursorFollower');
   let fx = 0, fy = 0, cx = 0, cy = 0;
 
@@ -917,15 +1071,15 @@
   }
   animateFollower();
 
-  // Scroll Reveal
+  // ── SCROLL REVEAL ────────────────────────────
   const reveals = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.1 });
   reveals.forEach(el => io.observe(el));
 
-  // Hover cursor expand on links/buttons
-  document.querySelectorAll('a, button, .project-card, .skill-item, .doc-card').forEach(el => {
+  // ── CURSOR EXPAND ON HOVER ───────────────────
+  document.querySelectorAll('a, button, .project-card, .skill-item').forEach(el => {
     el.addEventListener('mouseenter', () => {
       cursor.style.width = '20px'; cursor.style.height = '20px';
       follower.style.width = '60px'; follower.style.height = '60px';
