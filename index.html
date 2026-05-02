@@ -97,23 +97,37 @@
 
   /* Theme Toggle */
   .theme-toggle {
-    width: 44px; height: 24px; border-radius: 12px;
-    background: var(--fg5); border: 1px solid var(--border2);
+    width: 50px; height: 28px; border-radius: 14px;
+    background: linear-gradient(135deg, var(--fg5) 0%, var(--border2) 100%);
+    border: 1.5px solid var(--border2);
     cursor: pointer; position: relative;
-    transition: background 0.4s, border-color 0.4s;
+    transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
     flex-shrink: 0;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+  }
+  .theme-toggle:hover {
+    background: linear-gradient(135deg, var(--fg4) 0%, var(--border2) 100%);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2), 0 0 8px var(--fg5);
   }
   .theme-toggle::after {
-    content: ''; position: absolute; top: 3px; left: 3px;
-    width: 16px; height: 16px; border-radius: 50%;
-    background: var(--fg); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), background 0.4s;
+    content: ''; position: absolute; top: 4px; left: 4px;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--fg); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.4s;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
   }
-  html.light .theme-toggle::after { transform: translateX(20px); }
+  .theme-toggle::before {
+    content: '◑'; position: absolute; left: 6px; top: 50%; transform: translateY(-50%);
+    font-size: 10px; opacity: 0.4; transition: opacity 0.3s; font-style: normal;
+  }
+  html.light .theme-toggle::before { content: '●'; opacity: 0.6; }
+  html.light .theme-toggle::after { 
+    transform: translateX(22px);
+  }
   .theme-toggle-wrap {
-    display: flex; align-items: center; gap: 10px;
+    display: flex; align-items: center; gap: 8px;
   }
   .theme-icon {
-    font-size: 12px; opacity: 0.4; transition: opacity 0.3s;
+    font-size: 12px; opacity: 0.3; transition: opacity 0.3s;
     font-style: normal; user-select: none;
   }
 
@@ -459,14 +473,36 @@
     background: var(--bg);
     flex-direction: column; align-items: center; justify-content: center; gap: 40px;
     opacity: 0; transition: opacity 0.3s, background 0.5s;
+    pointer-events: none;
   }
-  .mobile-menu.open { opacity: 1; }
+  .mobile-menu.open { opacity: 1; pointer-events: auto; }
   .mobile-menu a {
     font-family: 'Bebas Neue', sans-serif; font-size: 52px; letter-spacing: 0.06em;
     color: var(--fg); text-decoration: none; opacity: 0.7;
     transition: opacity 0.2s, color 0.5s;
   }
   .mobile-menu a:hover { opacity: 1; }
+  
+  /* Mobile menu close button */
+  .mobile-menu-close {
+    position: absolute; top: 24px; right: 24px;
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--fg5); border: 1.5px solid var(--border2);
+    color: var(--fg); font-size: 22px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+    z-index: 160;
+    opacity: 0; transform: scale(0.8);
+  }
+  .mobile-menu.open .mobile-menu-close {
+    opacity: 1; transform: scale(1);
+  }
+  .mobile-menu-close:active {
+    transform: scale(0.9);
+  }
+  .mobile-menu-close:hover {
+    background: var(--fg4); box-shadow: 0 0 12px var(--fg5);
+  }
 
   /* Theme FAB (mobile) */
   .theme-fab {
@@ -604,6 +640,7 @@
 <!-- Mobile floating theme toggle -->
 <button class="theme-fab" id="themeFab" aria-label="Toggle theme">◑</button>
 <div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close menu">✕</button>
   <a href="#about">About</a>
   <a href="#projects">Projects</a>
   <a href="#experience">Experience</a>
@@ -1038,6 +1075,7 @@
   // ── MOBILE MENU ───────────────────────────────
   const burger = document.getElementById('navBurger');
   const mobileMenu = document.getElementById('mobileMenu');
+  const mobileMenuClose = document.getElementById('mobileMenuClose');
   function toggleMenu() {
     const open = mobileMenu.classList.toggle('open');
     burger.classList.toggle('open', open);
@@ -1049,6 +1087,7 @@
     document.body.style.overflow = '';
   }
   burger.addEventListener('click', toggleMenu);
+  mobileMenuClose.addEventListener('click', closeMenu);
   mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
 
   // ── CUSTOM CURSOR ────────────────────────────
